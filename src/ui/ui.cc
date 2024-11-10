@@ -15,7 +15,7 @@ UI::UI(int w, int h)
     window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
     ren_ = SDL_CreateRenderer(window_, -1, 0);
 
-    auto face_bytes = b::embed<"resources/images/face.png">();
+    std::vector<uint8_t> face = b::embed<"resources/images/face.png">().vec();
     // SDL_Surface* sf = IMG_Load_RW
 }
 
