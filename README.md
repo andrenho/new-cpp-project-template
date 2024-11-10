@@ -16,3 +16,4 @@ To start:
   - Remove sections that are not going to be used
   - Update the LICENSE file, if necessary
   - Rewrite this README
+    - Instruct users to run `./build.sh` first
