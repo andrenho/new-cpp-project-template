@@ -10,6 +10,14 @@ project(template-cpp-sdl-lua
     LANGUAGES C CXX ASM
 )
 
+include(FetchContent)
+FetchContent_Declare(
+        battery-embed
+        GIT_REPOSITORY https://github.com/batterycenter/embed.git
+        GIT_TAG        v1.2.19
+)
+FetchContent_MakeAvailable(battery-embed)
+
 #
 # configuration
 #
@@ -43,11 +51,6 @@ find_package(SDL2 REQUIRED)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
 pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
 
-find_program(XXD xxd)
-if(NOT XXD)
-    message(FATAL_ERROR "xxd not found")
-endif()
-
 #
 # executable
 #
@@ -57,6 +60,8 @@ add_executable(${CMAKE_PROJECT_NAME}
     src/ui/ui.hh
     src/ui/ui.cc
 )
+
+b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})

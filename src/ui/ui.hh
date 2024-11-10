@@ -20,8 +20,9 @@ public:
 private:
     bool running_ = true;
 
-    struct SDL_Window* window_;
+    struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
+    struct SDL_Texture*  texture_;
 };
 
 #endif
