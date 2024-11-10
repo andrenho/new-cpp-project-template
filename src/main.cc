@@ -1,6 +1,9 @@
 #include <iostream>
 
+#include "ui/ui.hh"
+
 int main()
 {
-    std::cout << "Hello from C++!\n";
+    UI::initialize();
+
 }
