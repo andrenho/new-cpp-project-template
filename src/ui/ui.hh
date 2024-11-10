@@ -3,11 +3,12 @@
 
 #include <chrono>
 
-using Duration = decltype(std::chrono::high_resolution_clock::now() - std::chrono::high_resolution_clock::now());
+using hr = std::chrono::high_resolution_clock;
+using Duration = decltype(hr::now() - hr::now());
 
 class UI {
 public:
-    UI(int w, int h);
+    UI();
     ~UI();
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;

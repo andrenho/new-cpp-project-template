@@ -6,17 +6,19 @@
 
 #include "battery/embed.hpp"
 
-UI::UI(int w, int h)
+UI::UI()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
 
-    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
+    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_RESIZABLE);
     ren_ = SDL_CreateRenderer(window_, -1, 0);
 
     std::vector<uint8_t> face = b::embed<"resources/images/face.png">().vec();
-    // SDL_Surface* sf = IMG_Load_RW
+    SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem(face.data(), (int) face.size()), 1);
+    texture_ = SDL_CreateTextureFromSurface(ren_, sf);
+    SDL_FreeSurface(sf);
 }
 
 UI::~UI()
@@ -45,5 +47,22 @@ void UI::update(Duration timestep)
 
 void UI::draw()
 {
+    SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(ren_);
+
+    int scr_w, scr_h;
+    SDL_GetWindowSize(window_, &scr_w, &scr_h);
+
+    int tx_w, tx_h;
+    SDL_QueryTexture(texture_, nullptr, nullptr, &tx_w, &tx_h);
+
+    SDL_Rect dest = {
+        .x = (scr_w / 2) - (tx_w / 2),
+        .y = (scr_h / 2) - (tx_h / 2),
+        .w = tx_w,
+        .h = tx_h,
+    };
+    SDL_RenderCopy(ren_, texture_, nullptr, &dest);
+
     SDL_RenderPresent(ren_);
 }

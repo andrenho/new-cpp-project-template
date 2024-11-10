@@ -8,6 +8,7 @@ It includes:
   - Automatically download git submodules
   - Create and run a SDL environment
     - Optionally embed SDL resources in final binary
+    - ImGUI support
   - Lua library
     - Optionally embed Lua scripts in final binary
   - Testing
