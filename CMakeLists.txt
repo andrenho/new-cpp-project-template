@@ -2,7 +2,7 @@
 # project definitions
 #
 
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.28)
 
 project(template-cpp-sdl-lua
     VERSION 0.0.1
@@ -22,7 +22,10 @@ set_property(GLOBAL PROPERTY LINK_WHAT_YOU_USE TRUE)
 
 # warnings
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(warnings -Wall -Wextra -Wformat-nonliteral -Wundef -Wshadow -Wwrite-strings -Wfloat-equal -Wswitch-default -Wmissing-format-attribute -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=malloc -Wsuggest-attribute=returns_nonnull -Wsuggest-attribute=format -Wsuggest-attribute=cold -Wswitch-enum -Wmissing-noreturn -Wno-unused-parameter -Wno-unused)
+    set(warnings -Wall -Wextra -Wformat-nonliteral -Wundef -Wshadow -Wwrite-strings -Wfloat-equal -Wswitch-default -Wmissing-format-attribute -Wswitch-enum -Wmissing-noreturn -Wno-unused-parameter -Wno-unused)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(warnings ${warnings} -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=malloc -Wsuggest-attribute=returns_nonnull -Wsuggest-attribute=format -Wsuggest-attribute=cold)
+    endif()
 endif()
 
 # try to use ccache, if available
