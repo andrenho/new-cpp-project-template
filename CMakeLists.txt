@@ -20,4 +20,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(warnings "${warnings} -Wno-unused-parameter -Wno-unused")
 endif()
 
+#
+# libraries
+#
 
+#
+# executable
+#
+
+add_executable(${CMAKE_PROJECT_NAME}
+    src/main.cc)
