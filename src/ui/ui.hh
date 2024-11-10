@@ -3,11 +3,15 @@
 
 #include <chrono>
 
+using Duration = decltype(std::chrono::high_resolution_clock::now() - std::chrono::high_resolution_clock::now());
+
 class UI {
 public:
-    void initialize();
+    UI(int w, int h);
+    ~UI();
+    UI (const UI&) = delete;
+    UI& operator=(const UI&) = delete;
 
-    using Duration = decltype(std::chrono::high_resolution_clock::now() - std::chrono::high_resolution_clock::now());
     void update([[maybe_unused]] Duration timestep);
     void draw();
 
@@ -15,6 +19,9 @@ public:
 
 private:
     bool running_ = true;
+
+    struct SDL_Window* window_;
+    struct SDL_Renderer* ren_;
 };
 
 #endif

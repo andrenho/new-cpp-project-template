@@ -1,13 +1,12 @@
 #include "ui/ui.hh"
 
 #include <chrono>
+using hr = std::chrono::high_resolution_clock;
 
 int main()
 {
-    UI ui;
-    ui.initialize();
+    UI ui(800, 600);
 
-    using hr = std::chrono::high_resolution_clock;
     auto last_frame = hr::now();
     while (ui.running()) {
         auto new_frame = hr::now();

@@ -41,6 +41,7 @@ endif()
 find_package(PkgConfig)
 find_package(SDL2 REQUIRED)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
 
 find_program(XXD xxd)
 if(NOT XXD)
@@ -57,10 +58,11 @@ add_executable(${CMAKE_PROJECT_NAME}
     src/ui/ui.cc
 )
 
+target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC . src ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
-target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS})
-target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES})
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC . src ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS})
+target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
 # installation
 
