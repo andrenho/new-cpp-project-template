@@ -1,4 +1,4 @@
-# new-cpp-project-template
+# New project template: C++, SDL, Lua
 
 A template for new C++ projects. Meant mostly for games but can be used for anything else.
 
