@@ -10,7 +10,9 @@ It includes:
     - Optionally embed SDL resources in final binary
   - Lua library
     - Optionally embed Lua scripts in final binary
+  - Testing
   - valgrind leak checking
+  - github actions
    
 To start:
   - Change project name and version in `CMakeLists.txt`
