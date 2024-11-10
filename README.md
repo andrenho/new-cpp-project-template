@@ -10,9 +10,10 @@ It includes:
     - Optionally embed SDL resources in final binary
   - Lua library
     - Optionally embed Lua scripts in final binary
+  - valgrind leak checking
    
 To start:
-  - Change project name and version in CMakeLists.txt
+  - Change project name and version in `CMakeLists.txt`
   - Remove sections that are not going to be used
   - Update the LICENSE file, if necessary
   - Rewrite this README

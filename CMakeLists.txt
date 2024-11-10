@@ -35,6 +35,15 @@ endif()
 # libraries
 #
 
+find_package(PkgConfig)
+find_package(SDL2 REQUIRED)
+pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+
+find_program(XXD xxd)
+if(NOT XXD)
+    message(FATAL_ERROR "xxd not found")
+endif()
+
 #
 # executable
 #
@@ -44,3 +53,6 @@ add_executable(${CMAKE_PROJECT_NAME}
 )
 
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC src ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
+target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS})
+target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES})
