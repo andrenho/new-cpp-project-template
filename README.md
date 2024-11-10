@@ -14,4 +14,5 @@ It includes:
 To start:
   - Change project name and version in CMakeLists.txt
   - Remove sections that are not going to be used
+  - Update the LICENSE file, if necessary
   - Rewrite this README
