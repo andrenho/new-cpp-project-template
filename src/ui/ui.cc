@@ -63,6 +63,10 @@ void UI::init_imgui()
 
 UI::~UI()
 {
+    ImGui_ImplSDLRenderer2_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
     if (ren_)
         SDL_DestroyRenderer(ren_);
     if (window_)

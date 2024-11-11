@@ -50,6 +50,8 @@ find_package(PkgConfig)
 find_package(SDL2 REQUIRED)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
 pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
+pkg_search_module(LUA REQUIRED luajit)
+#pkg_search_module(LUA REQUIRED lua5.4)
 
 #
 # executable
@@ -73,15 +75,18 @@ add_executable(${CMAKE_PROJECT_NAME}
     src/main.cc
     src/ui/ui.hh
     src/ui/ui.cc
+        src/lua/luaengine.cc
+        src/lua/luaengine.hh
 )
 
 b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
+b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
-target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/imgui contrib/glad/include ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
-target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS})
-target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/imgui contrib/glad/include ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})
+target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS} ${LUA_LIBRARY_DIRS})
+target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${LUA_LIBRARIES})
 
 # installation
 
