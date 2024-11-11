@@ -10,7 +10,7 @@ int main()
     while (ui.running()) {
         auto new_frame = hr::now();
         ui.update(new_frame - last_frame);
-        ui.draw();
+        ui.render();
         last_frame = new_frame;
     }
 }

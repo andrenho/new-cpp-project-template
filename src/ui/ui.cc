@@ -88,11 +88,25 @@ void UI::update(Duration timestep)
     }
 }
 
-void UI::draw()
+void UI::render()
 {
+    // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(ren_);
 
+    render_game();
+
+    // draw GUI
+    render_gui();
+    SDL_RenderSetScale(ren_, io->DisplayFramebufferScale.x, io->DisplayFramebufferScale.y);
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren_);
+
+    SDL_RenderPresent(ren_);
+}
+
+void UI::render_game()
+{
+    // get window size
     int scr_w, scr_h;
     SDL_GetWindowSize(window_, &scr_w, &scr_h);
 
@@ -106,16 +120,10 @@ void UI::draw()
         .h = tx_h,
     };
     SDL_RenderCopy(ren_, texture_, nullptr, &dest);
-
-    draw_ui();
-
-    SDL_RenderSetScale(ren_, io->DisplayFramebufferScale.x, io->DisplayFramebufferScale.y);
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren_);
-
-    SDL_RenderPresent(ren_);
 }
 
-void UI::draw_ui()
+
+void UI::render_gui()
 {
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();

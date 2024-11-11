@@ -14,14 +14,15 @@ public:
     UI& operator=(const UI&) = delete;
 
     void update([[maybe_unused]] Duration timestep);
-    void draw();
+    void render();
 
     [[nodiscard]] bool running() const { return running_; }
 
 private:
     void load_resources();
     void init_imgui();
-    void draw_ui();
+    void render_game();
+    void render_gui();
 
     bool running_ = true;
     bool show_demo_window_ = true;
