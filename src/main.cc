@@ -10,7 +10,6 @@ int main()
     lua_engine.hello();
 
     UI ui;
-    /*
     auto last_frame = hr::now();
     while (ui.running()) {
         auto new_frame = hr::now();
@@ -18,5 +17,4 @@ int main()
         ui.render();
         last_frame = new_frame;
     }
-    */
 }

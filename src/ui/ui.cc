@@ -27,14 +27,13 @@ UI::UI()
     if (!ren_)
         throw std::runtime_error("Error: SDL_CreateRenderer(): "s + SDL_GetError());
 
-    /*
     SDL_RendererInfo info;
     SDL_GetRendererInfo(ren_, &info);
     SDL_Log("Current SDL_Renderer: %s", info.name);
 
     load_resources();
     init_imgui();
-    */
+    load_resources();
 }
 
 void UI::load_resources()
@@ -65,14 +64,12 @@ void UI::init_imgui()
 
 UI::~UI()
 {
-    /*
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
     if (texture_)
         SDL_DestroyTexture(texture_);
-    */
     if (ren_)
         SDL_DestroyRenderer(ren_);
     if (window_)
