@@ -23,7 +23,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          draft: galse
+          draft: false
           prerelease: false
       - name: Upload artifact
         uses: alexellis/upload-assets@0.4.0

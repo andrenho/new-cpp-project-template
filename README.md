@@ -1,4 +1,4 @@
-# New project template: C++, SDL, Lua
+# New project template: C++, SDL, Lua, ImGUI
 
 A template for new C++ projects. Meant mostly for games but can be used for anything else.
 
@@ -12,7 +12,7 @@ It includes:
   - Lua library
     - Optionally embed Lua scripts in final binary
   - valgrind leak checking
-  - github actions
+  - github actions (pushing a new tag named 'v*' will create a new release and upload the source package).
    
 To start:
   - Change project name and version in `CMakeLists.txt`
