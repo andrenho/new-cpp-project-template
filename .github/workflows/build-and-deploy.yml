@@ -26,11 +26,8 @@ jobs:
           draft: galse
           prerelease: false
       - name: Upload artifact
-        uses: actions/upload-release-asset@v1
+        uses: alexellis/upload-assets@0.4.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/*.bz2
-          asset_name: template-cpp-sdl-lua.tar.bz2
-          asset_content_type: application/x-tar
+          asset_paths: '["./build/*.bz2"]'
