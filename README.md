@@ -20,3 +20,9 @@ To start:
   - Update the LICENSE file, if necessary
   - Rewrite this README
     - Instruct users to run `./build.sh` first
+
+CMake targets:
+  - `install`: install application on disk
+  - `package_source`: create tarball of application
+  - `leaks`: run the application and check for leaks with valgrind
+  - `leaks-gen-suppression`: generate new suppression file for valgrind

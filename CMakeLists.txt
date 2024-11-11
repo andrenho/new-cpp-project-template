@@ -88,6 +88,16 @@ target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/img
 target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS} ${LUA_LIBRARY_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${LUA_LIBRARIES})
 
+# check for leaks
+
+add_custom_target(leaks)
+add_custom_command(TARGET leaks
+    POST_BUILD
+    COMMENT Check for leaks using valgrind.
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./${PROJECT_NAME}
+)
+
 # installation
 
 install(TARGETS ${CMAKE_PROJECT_NAME}
