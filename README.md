@@ -11,7 +11,6 @@ It includes:
     - ImGUI support
   - Lua library
     - Optionally embed Lua scripts in final binary
-  - Testing
   - valgrind leak checking
   - github actions
    
