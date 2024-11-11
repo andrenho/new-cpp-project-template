@@ -62,8 +62,7 @@ set(IMGUI_SRC
         contrib/imgui/imgui_tables.cpp
         contrib/imgui/imgui_widgets.cpp
         contrib/imgui/backends/imgui_impl_sdl2.cpp
-        contrib/imgui/backends/imgui_impl_opengl3.cpp
-        contrib/glad/src/glad.c
+        contrib/imgui/backends/imgui_impl_sdlrenderer2.cpp
 )
 
 # ignore warnings in imported files

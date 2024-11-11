@@ -1,7 +1,6 @@
 #include "ui.hh"
 
 #include <string>
-#include <glad/glad.h>
 using namespace std::string_literals;
 
 #include "SDL2/SDL.h"
@@ -10,7 +9,7 @@ using namespace std::string_literals;
 
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
-#include "backends/imgui_impl_opengl3.h"
+#include "backends/imgui_impl_sdlrenderer2.h"
 
 #include "battery/embed.hpp"
 
@@ -20,40 +19,33 @@ UI::UI()
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-
-    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_RESIZABLE);
     if (!window_)
         throw std::runtime_error("Error: SDL_CreateWindow(): "s + SDL_GetError());
 
-    ren_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_PRESENTVSYNC);
+    ren_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if (!ren_)
         throw std::runtime_error("Error: SDL_CreateRenderer(): "s + SDL_GetError());
 
-    gl_context_ = SDL_GL_CreateContext(window_);
-    if (!gl_context_)
-        throw std::runtime_error("OpenGL context creation failed: "s + SDL_GetError());
-    if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
-        throw std::runtime_error("Could not initialize GLAD.");
-    SDL_GL_MakeCurrent(window_, gl_context_);
-    SDL_GL_SetSwapInterval(1); // Enable vsync
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(ren_, &info);
+    SDL_Log("Current SDL_Renderer: %s", info.name);
 
+    load_resources();
+    init_imgui();
+}
+
+void UI::load_resources()
+{
     std::vector<uint8_t> face = b::embed<"resources/images/face.png">().vec();
     SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem(face.data(), (int) face.size()), 1);
     texture_ = SDL_CreateTextureFromSurface(ren_, sf);
     SDL_FreeSurface(sf);
-
-    // init_imgui();
 }
+
 
 void UI::init_imgui()
 {
-    // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -65,8 +57,8 @@ void UI::init_imgui()
     //ImGui::StyleColorsLight();
 
     // Setup Platform/Renderer backends
-    ImGui_ImplSDL2_InitForOpenGL(window_, gl_context_);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplSDL2_InitForSDLRenderer(window_, ren_);
+    ImGui_ImplSDLRenderer2_Init(ren_);
 }
 
 UI::~UI()
@@ -84,6 +76,9 @@ void UI::update(Duration timestep)
 {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
+
+        ImGui_ImplSDL2_ProcessEvent(&e);
+
         switch (e.type) {
             case SDL_QUIT:
                 running_ = false;
@@ -101,9 +96,9 @@ void UI::draw()
     int scr_w, scr_h;
     SDL_GetWindowSize(window_, &scr_w, &scr_h);
 
+    // draw face texture
     int tx_w, tx_h;
     SDL_QueryTexture(texture_, nullptr, nullptr, &tx_w, &tx_h);
-
     SDL_Rect dest = {
         .x = (scr_w / 2) - (tx_w / 2),
         .y = (scr_h / 2) - (tx_h / 2),
@@ -112,5 +107,19 @@ void UI::draw()
     };
     SDL_RenderCopy(ren_, texture_, nullptr, &dest);
 
+    draw_ui();
+
     SDL_RenderPresent(ren_);
+}
+
+void UI::draw_ui()
+{
+    ImGui_ImplSDLRenderer2_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    if (show_demo_window_)
+        ImGui::ShowDemoWindow(&show_demo_window_);
+
+    ImGui::Render();
 }

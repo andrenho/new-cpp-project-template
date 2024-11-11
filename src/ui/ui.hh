@@ -19,14 +19,16 @@ public:
     [[nodiscard]] bool running() const { return running_; }
 
 private:
+    void load_resources();
     void init_imgui();
+    void draw_ui();
 
     bool running_ = true;
+    bool show_demo_window_ = true;
 
     struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
     struct SDL_Texture*  texture_;
-    void* gl_context_;
 };
 
 #endif
