@@ -3,7 +3,7 @@
    Memcheck:Leak
    ...
    fun:_dl_init
-   obj:/usr/lib/ld-linux-x86-64.so.2
+   ...
 }
 {
    <insert_a_suppression_name_here>
@@ -58,6 +58,34 @@
    Memcheck:Leak
    ...
    fun:X11_*
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:dri2_*
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:pipe_*
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:*pthread*
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:XSetLocaleModifiers
    ...
 }
 {
