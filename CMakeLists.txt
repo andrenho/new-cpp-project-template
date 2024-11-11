@@ -95,7 +95,7 @@ add_custom_command(TARGET leaks
     POST_BUILD
     COMMENT "Check for leaks using valgrind."
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMAND LIBGL_ALWAYS_SOFTWARE=1 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=${CMAKE_SOURCE_DIR}/valgrind.supp ./${PROJECT_NAME}
+    COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=${CMAKE_SOURCE_DIR}/valgrind.supp ./${PROJECT_NAME}
 )
 
 add_custom_target(leaks-gen-suppressions)
@@ -103,7 +103,7 @@ add_custom_command(TARGET leaks-gen-suppressions
     POST_BUILD
     COMMENT "Check for leaks using valgrind. See valgrind-gen.supp when finished."
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMAND LIBGL_ALWAYS_SOFTWARE=1 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --gen-suppressions=all --log-file=${CMAKE_SOURCE_DIR}/valgrind-gen.supp --suppressions=${CMAKE_SOURCE_DIR}/valgrind.supp ./${PROJECT_NAME}
+    COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --gen-suppressions=all --log-file=${CMAKE_SOURCE_DIR}/valgrind-gen.supp --suppressions=${CMAKE_SOURCE_DIR}/valgrind.supp ./${PROJECT_NAME}
 )
 
 
