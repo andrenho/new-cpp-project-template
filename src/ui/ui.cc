@@ -48,9 +48,9 @@ void UI::init_imgui()
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io = &ImGui::GetIO();
+    io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -108,6 +108,9 @@ void UI::draw()
     SDL_RenderCopy(ren_, texture_, nullptr, &dest);
 
     draw_ui();
+
+    SDL_RenderSetScale(ren_, io->DisplayFramebufferScale.x, io->DisplayFramebufferScale.y);
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren_);
 
     SDL_RenderPresent(ren_);
 }

@@ -29,6 +29,7 @@ private:
     struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
     struct SDL_Texture*  texture_;
+    struct ImGuiIO* io;
 };
 
 #endif
