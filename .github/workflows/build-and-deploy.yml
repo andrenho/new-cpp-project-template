@@ -1,0 +1,11 @@
+name: Build and deploy
+on: [push]  # TODO
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: apt install -y build-essential libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev luajit
+      - name: Checkout
+        uses: actions/checkout@v4
+

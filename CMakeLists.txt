@@ -82,7 +82,11 @@ add_executable(${CMAKE_PROJECT_NAME}
 b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
 b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
 
-target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(DEF B_PRODUCTION_MODE=ON)
+endif()
+
+target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\" ${DEF})
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
 target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/imgui contrib/glad/include ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})
 target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS} ${LUA_LIBRARY_DIRS})
@@ -115,6 +119,6 @@ install(TARGETS ${CMAKE_PROJECT_NAME}
 # packaging
 
 set(CPACK_SOURCE_GENERATOR "TBZ2")
-set(CPACK_SOURCE_IGNORE_FILES .git/ .idea/ _CPack_Packages/ ${CMAKE_BINARY_DIR}/ ${PROJECT_BINARY_DIR}/)
+set(CPACK_SOURCE_IGNORE_FILES .git/ .github/ .idea/ _CPack_Packages/ ${CMAKE_BINARY_DIR}/ ${PROJECT_BINARY_DIR}/)
 set(CPACK_SOURCE_PACKAGE_FILE_NAME ${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION})
 include(CPack)
