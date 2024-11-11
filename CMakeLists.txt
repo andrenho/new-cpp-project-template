@@ -55,7 +55,22 @@ pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
 # executable
 #
 
+set(IMGUI_SRC
+        contrib/imgui/imgui.cpp
+        contrib/imgui/imgui_demo.cpp
+        contrib/imgui/imgui_draw.cpp
+        contrib/imgui/imgui_tables.cpp
+        contrib/imgui/imgui_widgets.cpp
+        contrib/imgui/backends/imgui_impl_sdl2.cpp
+        contrib/imgui/backends/imgui_impl_opengl3.cpp
+        contrib/glad/src/glad.c
+)
+
+# ignore warnings in imported files
+set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
+
 add_executable(${CMAKE_PROJECT_NAME}
+    ${IMGUI_SRC}
     src/main.cc
     src/ui/ui.hh
     src/ui/ui.cc
@@ -65,7 +80,7 @@ b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\")
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC . src ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/imgui contrib/glad/include ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
