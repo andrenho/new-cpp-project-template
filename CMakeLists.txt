@@ -28,7 +28,7 @@ set_property(GLOBAL PROPERTY CXX_EXTENSIONS OFF)
 set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 set_property(GLOBAL PROPERTY LINK_WHAT_YOU_USE TRUE)
 
-# warnings
+# warnings / flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(warnings -Wall -Wextra -Wformat-nonliteral -Wundef -Wshadow -Wwrite-strings -Wfloat-equal -Wswitch-default -Wmissing-format-attribute -Wswitch-enum -Wmissing-noreturn -Wno-unused-parameter -Wno-unused)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -75,15 +75,20 @@ add_executable(${CMAKE_PROJECT_NAME}
     src/main.cc
     src/ui/ui.hh
     src/ui/ui.cc
-        src/lua/luaengine.cc
-        src/lua/luaengine.hh
+    src/lua/luaengine.cc
+    src/lua/luaengine.hh
 )
 
 b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
 b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(-ggdb -O0)
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(DEF B_PRODUCTION_MODE=ON)
+    add_compile_options(-Ofast -flto)
 endif()
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\" ${DEF})
