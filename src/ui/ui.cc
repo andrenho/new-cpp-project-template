@@ -33,7 +33,6 @@ UI::UI()
 
     load_resources();
     init_imgui();
-    load_resources();
 }
 
 void UI::load_resources()
