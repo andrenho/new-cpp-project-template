@@ -57,6 +57,11 @@ pkg_search_module(LUA REQUIRED luajit)
 # executable
 #
 
+set(ENGINE_SRC
+        src/lua/luaengine.cc
+        src/lua/luaengine.hh
+)
+
 set(IMGUI_SRC
         contrib/imgui/imgui.cpp
         contrib/imgui/imgui_demo.cpp
@@ -72,11 +77,10 @@ set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
 
 add_executable(${CMAKE_PROJECT_NAME}
     ${IMGUI_SRC}
+    ${ENGINE_SRC}
     src/main.cc
     src/ui/ui.hh
     src/ui/ui.cc
-    src/lua/luaengine.cc
-    src/lua/luaengine.hh
 )
 
 b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
@@ -115,6 +119,23 @@ add_custom_command(TARGET leaks-gen-suppressions
     COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --gen-suppressions=all --log-file=${CMAKE_SOURCE_DIR}/valgrind-gen.supp --suppressions=${CMAKE_SOURCE_DIR}/valgrind.supp ./${PROJECT_NAME}
 )
 
+add_executable(${PROJECT_NAME}-tests
+        ${ENGINE_SRC}
+        tests/doctest.h
+        tests/main.cc
+        tests/tests.cc
+)
+target_compile_definitions(${PROJECT_NAME}-tests PUBLIC PROJECT_NAME=\"${PROJECT_NAME}-tests\" ${DEF})
+target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})
+target_include_directories(${PROJECT_NAME}-tests SYSTEM PUBLIC . src ${LUA_INCLUDE_DIRS})
+target_link_directories(${PROJECT_NAME}-tests PUBLIC ${LUA_LIBRARY_DIRS})
+target_link_libraries(${PROJECT_NAME}-tests LINK_PUBLIC ${LUA_LIBRARIES})
+
+b_embed(${CMAKE_PROJECT_NAME}-tests resources/scripts/hello.lua)
+
+enable_testing()
+add_test(${PROJECT_NAME}-tests ${PROJECT_NAME}-tests)
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS ${PROJECT_NAME}-tests)
 
 # installation
 
