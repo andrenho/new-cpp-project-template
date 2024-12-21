@@ -1,5 +1,7 @@
 #include "doctest.h"
 
+#include <cstddef>
+
 TEST_SUITE("example")
 {
     TEST_CASE("example test")
