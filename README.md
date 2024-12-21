@@ -1,5 +1,7 @@
 # New project template: C++, SDL, Lua, ImGUI
 
+![build](https://github.com/andrenho/template-cpp-sdl-lua/actions/workflows/build-and-deploy.yml/badge.svg)
+
 A template for new C++ projects. Meant mostly for games but can be used for anything else.
 
 It includes:
